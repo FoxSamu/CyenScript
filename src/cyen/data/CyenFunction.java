@@ -23,7 +23,7 @@ public class CyenFunction extends CyenObject {
 
     @Override
     public String stringify( ExecContext ctx ) {
-        return invocable.getStringified();
+        return getName() + invocable.getStringified();
     }
 
     @Override
