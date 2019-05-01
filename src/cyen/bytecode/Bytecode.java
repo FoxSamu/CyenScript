@@ -1,23 +1,23 @@
 package cyen.bytecode;
 
-import cyen.bytecode.command.IBytecodeInsn;
+import cyen.bytecode.instruction.IInstruction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Bytecode {
-    private final ArrayList<IBytecodeInsn> instructions = new ArrayList<>();
+    private final ArrayList<IInstruction> instructions = new ArrayList<>();
 
     public Bytecode() {
 
     }
 
-    public Bytecode( IBytecodeInsn... insns ) {
+    public Bytecode( IInstruction... insns ) {
         instructions.addAll( Arrays.asList( insns ) );
     }
 
-    public Bytecode( List<? extends IBytecodeInsn> insns ) {
+    public Bytecode( List<? extends IInstruction> insns ) {
         instructions.addAll( insns );
     }
 
@@ -25,23 +25,23 @@ public class Bytecode {
         instructions.addAll( insns.instructions );
     }
 
-    public IBytecodeInsn getInsn( int index ) {
+    public IInstruction getInsn( int index ) {
         return instructions.get( index );
     }
 
-    public void insertInsn( int index, IBytecodeInsn insn ) {
+    public void insertInsn( int index, IInstruction insn ) {
         instructions.add( index, insn );
     }
 
-    public void setInsn( int index, IBytecodeInsn insn ) {
+    public void setInsn( int index, IInstruction insn ) {
         instructions.set( index, insn );
     }
 
-    public void appendInsn( IBytecodeInsn insn ) {
+    public void appendInsn( IInstruction insn ) {
         instructions.add( insn );
     }
 
-    public void prependInsn( IBytecodeInsn insn ) {
+    public void prependInsn( IInstruction insn ) {
         instructions.add( 0, insn );
     }
 
@@ -57,11 +57,11 @@ public class Bytecode {
         instructions.addAll( 0, bytecode.instructions );
     }
 
-    public IBytecodeInsn removeInsn( int index ) {
+    public IInstruction removeInsn( int index ) {
         return instructions.remove( index );
     }
 
-    public void removeInsn( IBytecodeInsn insn ) {
+    public void removeInsn( IInstruction insn ) {
         instructions.remove( insn );
     }
 

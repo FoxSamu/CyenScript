@@ -1,10 +1,10 @@
-package cyen.bytecode.command.print;
+package cyen.bytecode.instruction.print;
 
 import cyen.bytecode.ExecContext;
-import cyen.bytecode.command.IBytecodeInsn;
+import cyen.bytecode.instruction.IInstruction;
 import cyen.data.ICyenData;
 
-public class PrintInsn implements IBytecodeInsn {
+public class InsnPrint implements IInstruction {
     @Override
     public void execute( ExecContext ctx ) {
         ICyenData data = ctx.pop();

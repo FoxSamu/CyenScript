@@ -1,12 +1,12 @@
-package cyen.bytecode.command.jump;
+package cyen.bytecode.instruction.jump;
 
 import cyen.bytecode.ExecContext;
-import cyen.bytecode.command.IBytecodeInsn;
+import cyen.bytecode.instruction.IInstruction;
 
-public class GotoInsn implements IBytecodeInsn {
+public class InsnGoto implements IInstruction {
     private final int n;
 
-    public GotoInsn( int n ) {
+    public InsnGoto( int n ) {
         this.n = n;
     }
 

@@ -1,13 +1,13 @@
-package cyen.bytecode.command.push;
+package cyen.bytecode.instruction.push;
 
 import cyen.bytecode.ExecContext;
-import cyen.bytecode.command.IBytecodeInsn;
+import cyen.bytecode.instruction.IInstruction;
 import cyen.data.CyenString;
 
-public class StringPushInsn implements IBytecodeInsn {
+public class InsnStringPush implements IInstruction {
     private final String string;
 
-    public StringPushInsn( String string ) {
+    public InsnStringPush( String string ) {
         this.string = string;
     }
 

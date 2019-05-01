@@ -1,6 +1,6 @@
 package cyen.bytecode;
 
-import cyen.bytecode.command.IBytecodeInsn;
+import cyen.bytecode.instruction.IInstruction;
 import cyen.bytecode.util.StackTrace;
 import cyen.bytecode.util.TryClosure;
 import cyen.data.ICyenData;
@@ -99,13 +99,13 @@ public class ExecContext {
         return new StackTrace( trace.toArray( new StackTrace.Element[ 0 ] ) );
     }
 
-    public void raise( ICyenData error, StackTrace trace ) throws CyenRaisedException {
+    private void raise( ICyenData error, StackTrace trace, ExecContext thrower ) throws CyenRaisedException {
         if( tryClosureStack.empty() ) {
             if( isRoot() ) {
                 exit();
-                throw new CyenRaisedException( error, trace );
+                throw new CyenRaisedException( error, trace, thrower );
             } else {
-                parent.raise( error, trace );
+                parent.raise( error, trace, thrower );
             }
         } else {
             TryClosure closure = tryClosureStack.pop();
@@ -114,7 +114,7 @@ public class ExecContext {
     }
 
     public void raise( ICyenData error ) throws CyenRaisedException {
-        raise( error, getStackTrace() );
+        raise( error, getStackTrace(), this );
     }
 
 
@@ -188,7 +188,7 @@ public class ExecContext {
 
     /* FLOW */
 
-    public IBytecodeInsn getCurrentInsn() {
+    public IInstruction getCurrentInsn() {
         return bytecode.getInsn( instructionLoc );
     }
 
@@ -201,7 +201,7 @@ public class ExecContext {
     }
 
     public void executeInsn() {
-        IBytecodeInsn insn = getCurrentInsn();
+        IInstruction insn = getCurrentInsn();
         instructionLoc++; // Increase before invoking insn to prevent location increment after jumping
         insn.execute( this );
     }

@@ -1,7 +1,7 @@
-package cyen.bytecode.command;
+package cyen.bytecode.instruction;
 
 import cyen.bytecode.ExecContext;
 
-public interface IBytecodeInsn {
+public interface IInstruction {
     void execute( ExecContext ctx );
 }
