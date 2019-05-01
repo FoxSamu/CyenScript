@@ -2,7 +2,10 @@ package cyen.data.number.type;
 
 import cyen.data.number.INumberData;
 import cyen.data.number.INumberType;
+import cyen.data.number.data.DataDouble;
+import cyen.data.number.data.DataInt;
 import cyen.data.number.data.DataShort;
+import cyen.util.NumberUtils;
 
 public class TypeShort implements INumberType {
     @Override
@@ -22,7 +25,9 @@ public class TypeShort implements INumberType {
 
     @Override
     public INumberData div( INumberData self, INumberData other ) {
-        return new DataShort( self.shortValue() / other.shortValue() );
+        short s = self.shortValue(), o = other.shortValue();
+        if( s / o * o != s ) return new DataDouble( self.doubleValue() / other.doubleValue() );
+        return new DataShort( s / o );
     }
 
     @Override
@@ -91,8 +96,33 @@ public class TypeShort implements INumberType {
     }
 
     @Override
+    public INumberData leftRotate( INumberData self, int amount ) {
+        return new DataInt( NumberUtils.rotateLeft( self.shortValue(), amount ) );
+    }
+
+    @Override
+    public INumberData rightRotate( INumberData self, int amount ) {
+        return new DataInt( NumberUtils.rotateRight( self.shortValue(), amount ) );
+    }
+
+    @Override
     public INumberData bitNot( INumberData self ) {
         return new DataShort( ~ self.shortValue() );
+    }
+
+    @Override
+    public INumberData bitFlip( INumberData self ) {
+        return new DataShort( NumberUtils.reverseBits( self.shortValue() ) );
+    }
+
+    @Override
+    public INumberData bitCount( INumberData self ) {
+        return new DataShort( Integer.bitCount( self.shortValue() & 0xffff ) );
+    }
+
+    @Override
+    public INumberData binarySwap( INumberData self ) {
+        return self;
     }
 
     @Override

@@ -1,7 +1,8 @@
-package cyen.data;
+package cyen.data.error;
 
 import cyen.bytecode.ExecContext;
 import cyen.bytecode.util.StackTrace;
+import cyen.data.CyenObject;
 
 public class CyenError extends CyenObject {
     public final String errorMessage;
@@ -26,8 +27,15 @@ public class CyenError extends CyenObject {
         return "Error";
     }
 
+    public boolean canCatch() {
+        return true;
+    }
+
     @Override
     public String stringify( ExecContext ctx ) {
-        return getErrorName() + ": " + errorMessage + "\n" + trace.toString() + ( cause != null ? cause.stringify( ctx ) : "" );
+        return getErrorName()
+                + ( errorMessage == null ? "" : ": " + errorMessage ) + "\n"
+                + trace.toString()
+                + ( cause != null ? "Caused by " + cause.stringify( ctx ) : "" );
     }
 }

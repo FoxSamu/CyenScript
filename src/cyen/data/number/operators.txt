@@ -1,0 +1,53 @@
+Helper file to list numeric operators
+
+Binary
+    +       add
+    -       subtract
+    *       multiply
+    /       divide
+    //      int divide
+    %       modulo
+    **      power
+
+    &       bitwise and
+    |       bitwise or
+    ^       bitwise xor
+    <<      left shift
+    >>      right shift signed
+    >>>     right shift unsigned
+    <*      rotate left
+    *>      rotate right
+
+Unary
+    -       negate
+    +       absolute
+
+    floor   round down
+    ceil    round up
+    round   round mathematically
+
+    real    real part
+    imag    imaginary part
+
+    ~       bitwise not
+    &       reverse bit order
+    |       number of 1 bits
+    :       switch between floating point and binary representation
+
+Comparative
+    <       less than
+    >       more than
+    <=      less than or equal to
+    >=      more than or equal to
+    ==      equal to
+    !=      not equal to
+
+In range operators (ternary)
+    <  <
+    >  >
+    <= <
+    <  <=
+    >= >
+    >  >=
+    <= <=
+    >= >=

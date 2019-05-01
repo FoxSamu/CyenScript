@@ -26,6 +26,11 @@ public class CyenBoolean extends CyenObject {
     }
 
     @Override
+    public boolean booleanize( ExecContext ctx ) {
+        return value;
+    }
+
+    @Override
     public Class getParamClass() {
         return boolean.class;
     }

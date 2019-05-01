@@ -11,6 +11,8 @@ public enum ENumBinaryOperand {
     RIGHT_SIGNED( new BitShiftTypeSupplier(), ( type, left, right ) -> type.rightShiftSigned( left, right.intValue() ) ),
     RIGHT_UNSIGNED( new BitShiftTypeSupplier(), ( type, left, right ) -> type.rightShiftUnsigned( left, right.intValue() ) ),
     LEFT_SHIFT( new BitShiftTypeSupplier(), ( type, left, right ) -> type.leftShift( left, right.intValue() ) ),
+    LEFT_ROTATE( new BitShiftTypeSupplier(), ( type, left, right ) -> type.leftRotate( left, right.intValue() ) ),
+    RIGHT_ROTATE( new BitShiftTypeSupplier(), ( type, left, right ) -> type.rightRotate( left, right.intValue() ) ),
     BIT_OR( new BitwiseTypeSupplier(), INumberType::bitOr ),
     BIT_AND( new BitwiseTypeSupplier(), INumberType::bitAnd ),
     BIT_XOR( new BitwiseTypeSupplier(), INumberType::bitXor );

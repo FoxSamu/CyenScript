@@ -1,10 +1,11 @@
 package cyen.bytecode;
 
-import cyen.bytecode.instruction.IInstruction;
+import cyen.bytecode.instruction.IBytecodeInsn;
 import cyen.bytecode.util.StackTrace;
 import cyen.bytecode.util.TryClosure;
 import cyen.data.ICyenData;
-import cyen.exception.CyenInvocationException;
+import cyen.data.error.CyenError;
+import cyen.data.error.CyenInternalError;
 import cyen.exception.CyenRaisedException;
 
 import java.util.ArrayList;
@@ -99,8 +100,8 @@ public class ExecContext {
         return new StackTrace( trace.toArray( new StackTrace.Element[ 0 ] ) );
     }
 
-    private void raise( ICyenData error, StackTrace trace, ExecContext thrower ) throws CyenRaisedException {
-        if( tryClosureStack.empty() ) {
+    private void raise( CyenError error, StackTrace trace, ExecContext thrower ) throws CyenRaisedException {
+        if( ! error.canCatch() || tryClosureStack.empty() ) {
             if( isRoot() ) {
                 exit();
                 throw new CyenRaisedException( error, trace, thrower );
@@ -113,45 +114,46 @@ public class ExecContext {
         }
     }
 
-    public void raise( ICyenData error ) throws CyenRaisedException {
+    public void raise( CyenError error ) throws CyenRaisedException {
         raise( error, getStackTrace(), this );
     }
 
 
     /* LOCALS */
 
-    private void checkLocal( int index ) {
-        if( index < 0 ) throw new CyenInvocationException( "Local variable index may not be less than zero!" );
-        if( index >= locals.length ) throw new CyenInvocationException( "Local variable table overflow!" );
-        if( index >= allocatedLocals ) throw new CyenInvocationException( "Local variable not allocated jet!" );
+    private boolean checkLocal( int index ) {
+        if( index < 0 ) { internalError( "Negative local index!" ); return false; }
+        if( index >= locals.length ) { internalError( "Local index overflows table size!" ); return false; }
+        if( index >= allocatedLocals ) { internalError( "Local index is not yet allocated!" ); return false; }
+        return true;
     }
 
     public void setLocal( int index, ICyenData value ) {
-        checkLocal( index );
+        if( ! checkLocal( index ) ) return;
         locals[ index ] = value;
     }
 
     public ICyenData getLocal( int index ) {
-        checkLocal( index );
+        if( ! checkLocal( index ) ) return null;
         return locals[ index ];
     }
 
     public void allocLocals( int amount ) {
         if( amount < 0 ) {
-            throw new CyenInvocationException( "Tried to allocate a negative amount of locals!" );
+            internalError( "Allocating negative amount of locals!" ); return;
         }
         if( allocatedLocals + amount > locals.length ) {
-            throw new CyenInvocationException( "Tried to allocate more locals than available!" );
+            internalError( "Allocating more locals than available!" ); return;
         }
         allocatedLocals += amount;
     }
 
     public void freeLocals( int amount ) {
         if( amount < 0 ) {
-            throw new CyenInvocationException( "Tried to free a negative amount of locals!" );
+            internalError( "Freeing negative amount of locals!" ); return;
         }
         if( allocatedLocals - amount < 0 ) {
-            throw new CyenInvocationException( "Tried to free more locals than allocated" );
+            internalError( "Freeing more locals than allocated!" ); return;
         }
         for( int i = 0; i < amount; i++ ) {
             allocatedLocals--;
@@ -188,7 +190,7 @@ public class ExecContext {
 
     /* FLOW */
 
-    public IInstruction getCurrentInsn() {
+    public IBytecodeInsn getCurrentInsn() {
         return bytecode.getInsn( instructionLoc );
     }
 
@@ -201,7 +203,7 @@ public class ExecContext {
     }
 
     public void executeInsn() {
-        IInstruction insn = getCurrentInsn();
+        IBytecodeInsn insn = getCurrentInsn();
         instructionLoc++; // Increase before invoking insn to prevent location increment after jumping
         insn.execute( this );
     }
@@ -235,7 +237,9 @@ public class ExecContext {
     }
 
     public ICyenData pop() {
-        if( stack.empty() ) throw new CyenInvocationException( "Tried popping from empty stack!" );
+        if( stack.empty() ) {
+            return internalError( "Popping from empty stack" );
+        }
         return stack.pop();
     }
 
@@ -282,5 +286,11 @@ public class ExecContext {
 
     public boolean hasGlobal( String name ) {
         return hasGlobalInternal( name ) || ! isRoot() && parent.hasGlobal( name );
+    }
+
+
+    public ICyenData internalError( String errorMsg ) {
+        raise( new CyenInternalError( this, errorMsg ) );
+        return null;
     }
 }

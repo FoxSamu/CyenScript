@@ -2,6 +2,7 @@ package cyen.data.number.type;
 
 import cyen.data.number.INumberData;
 import cyen.data.number.INumberType;
+import cyen.data.number.data.DataDouble;
 import cyen.data.number.data.DataLong;
 
 public class TypeLong implements INumberType {
@@ -22,7 +23,9 @@ public class TypeLong implements INumberType {
 
     @Override
     public INumberData div( INumberData self, INumberData other ) {
-        return new DataLong( self.longValue() / other.longValue() );
+        long s = self.longValue(), o = other.longValue();
+        if( s / o * o != s ) return new DataDouble( self.doubleValue() / other.doubleValue() );
+        return new DataLong( s / o );
     }
 
     @Override
@@ -91,8 +94,33 @@ public class TypeLong implements INumberType {
     }
 
     @Override
+    public INumberData leftRotate( INumberData self, int amount ) {
+        return new DataLong( Long.rotateLeft( self.longValue(), amount ) );
+    }
+
+    @Override
+    public INumberData rightRotate( INumberData self, int amount ) {
+        return new DataLong( Long.rotateRight( self.longValue(), amount ) );
+    }
+
+    @Override
     public INumberData bitNot( INumberData self ) {
         return new DataLong( ~ self.longValue() );
+    }
+
+    @Override
+    public INumberData bitFlip( INumberData self ) {
+        return new DataLong( Long.reverse( self.longValue() ) );
+    }
+
+    @Override
+    public INumberData bitCount( INumberData self ) {
+        return new DataLong( Long.bitCount( self.longValue() ) );
+    }
+
+    @Override
+    public INumberData binarySwap( INumberData self ) {
+        return new DataLong( Double.doubleToRawLongBits( self.doubleValue() ) );
     }
 
     @Override

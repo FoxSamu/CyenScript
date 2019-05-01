@@ -3,7 +3,7 @@ package cyen.data.number.type;
 import cyen.data.number.INumberData;
 import cyen.data.number.INumberType;
 import cyen.data.number.data.DataFloat;
-import cyen.util.ArithmeticUtils;
+import cyen.util.NumberUtils;
 
 public class TypeFloat implements INumberType {
     @Override
@@ -28,7 +28,7 @@ public class TypeFloat implements INumberType {
 
     @Override
     public INumberData floorDiv( INumberData self, INumberData other ) {
-        return new DataFloat( ArithmeticUtils.integerRound( self.floatValue() / other.floatValue() ) );
+        return new DataFloat( NumberUtils.integerRound( self.floatValue() / other.floatValue() ) );
     }
 
     @Override
@@ -92,8 +92,33 @@ public class TypeFloat implements INumberType {
     }
 
     @Override
+    public INumberData leftRotate( INumberData self, int amount ) {
+        return new DataFloat( Integer.rotateLeft( self.intValue(), amount ) );
+    }
+
+    @Override
+    public INumberData rightRotate( INumberData self, int amount ) {
+        return new DataFloat( Integer.rotateRight( self.intValue(), amount ) );
+    }
+
+    @Override
     public INumberData bitNot( INumberData self ) {
         return new DataFloat( ~ self.intValue() );
+    }
+
+    @Override
+    public INumberData bitFlip( INumberData self ) {
+        return new DataFloat( Integer.reverse( self.intValue() ) );
+    }
+
+    @Override
+    public INumberData bitCount( INumberData self ) {
+        return new DataFloat( Integer.bitCount( self.intValue() ) );
+    }
+
+    @Override
+    public INumberData binarySwap( INumberData self ) {
+        return new DataFloat( Float.intBitsToFloat( self.intValue() ) );
     }
 
     @Override

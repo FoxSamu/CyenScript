@@ -8,7 +8,10 @@ public enum ENumUnaryOperand {
     FLOOR( new SimpleTypeSupplier(), INumberType::floor ),
     CEIL( new SimpleTypeSupplier(), INumberType::ceil ),
     ROUND( new SimpleTypeSupplier(), INumberType::round ),
-    BIT_NOT( new IntegerTypeSupplier(), INumberType::bitNot );
+    BIT_NOT( new IntegerTypeSupplier(), INumberType::bitNot ),
+    BIT_FLIP( new IntegerTypeSupplier(), INumberType::bitFlip ),
+    BIT_COUNT( new IntegerTypeSupplier(), INumberType::bitCount ),
+    BINARY_SWAP( new SwapTypeSupplier(), INumberType::binarySwap );
 
     public final ITypeSupplier typeSupplier;
     public final IOperandInvoker invoker;
@@ -42,6 +45,17 @@ public enum ENumUnaryOperand {
         @Override
         public INumberType computeType( INumberType type ) {
             return type.getLevel() == 5 ? ENumberType.LONG.type : type.getLevel() == 4 ? ENumberType.INT.type : type;
+        }
+    }
+
+    public static class SwapTypeSupplier implements ITypeSupplier {
+        @Override
+        public INumberType computeType( INumberType type ) {
+            int level = type.getLevel();
+            if( level == 5 ) return ENumberType.LONG.type;
+            if( level == 4 ) return ENumberType.INT.type;
+            if( level == 3 ) return ENumberType.DOUBLE.type;
+            return ENumberType.FLOAT.type;
         }
     }
 }

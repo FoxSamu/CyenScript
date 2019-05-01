@@ -30,4 +30,8 @@ public class CyenFunction extends CyenObject {
     public Class getParamClass() {
         return CyenFunction.class;
     }
+
+    public String getName() {
+        return "unnamed_function";
+    }
 }

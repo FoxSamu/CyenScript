@@ -3,6 +3,8 @@ package cyen.data.number.type;
 import cyen.data.number.INumberData;
 import cyen.data.number.INumberType;
 import cyen.data.number.data.DataByte;
+import cyen.data.number.data.DataDouble;
+import cyen.util.NumberUtils;
 
 public class TypeByte implements INumberType {
     @Override
@@ -22,7 +24,9 @@ public class TypeByte implements INumberType {
 
     @Override
     public INumberData div( INumberData self, INumberData other ) {
-        return new DataByte( self.byteValue() / other.byteValue() );
+        byte s = self.byteValue(), o = other.byteValue();
+        if( s / o * o != s ) return new DataDouble( self.doubleValue() / other.doubleValue() );
+        return new DataByte( s / o );
     }
 
     @Override
@@ -91,8 +95,33 @@ public class TypeByte implements INumberType {
     }
 
     @Override
+    public INumberData leftRotate( INumberData self, int amount ) {
+        return new DataByte( NumberUtils.rotateLeft( self.byteValue(), amount ) );
+    }
+
+    @Override
+    public INumberData rightRotate( INumberData self, int amount ) {
+        return new DataByte( NumberUtils.rotateRight( self.byteValue(), amount ) );
+    }
+
+    @Override
     public INumberData bitNot( INumberData self ) {
         return new DataByte( ~ self.byteValue() );
+    }
+
+    @Override
+    public INumberData bitFlip( INumberData self ) {
+        return new DataByte( NumberUtils.reverseBits( self.byteValue() ) );
+    }
+
+    @Override
+    public INumberData bitCount( INumberData self ) {
+        return new DataByte( Integer.bitCount( self.byteValue() & 0xff ) );
+    }
+
+    @Override
+    public INumberData binarySwap( INumberData self ) {
+        return self;
     }
 
     @Override

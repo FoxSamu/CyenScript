@@ -1,9 +1,9 @@
 package cyen.bytecode.instruction.locals;
 
 import cyen.bytecode.ExecContext;
-import cyen.bytecode.instruction.IInstruction;
+import cyen.bytecode.instruction.IBytecodeInsn;
 
-public class InsnMaxLocals implements IInstruction {
+public class InsnMaxLocals implements IBytecodeInsn {
 
     public int amount;
 

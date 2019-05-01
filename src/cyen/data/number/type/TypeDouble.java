@@ -3,7 +3,7 @@ package cyen.data.number.type;
 import cyen.data.number.INumberData;
 import cyen.data.number.INumberType;
 import cyen.data.number.data.DataDouble;
-import cyen.util.ArithmeticUtils;
+import cyen.util.NumberUtils;
 
 public class TypeDouble implements INumberType {
     @Override
@@ -28,7 +28,7 @@ public class TypeDouble implements INumberType {
 
     @Override
     public INumberData floorDiv( INumberData self, INumberData other ) {
-        return new DataDouble( ArithmeticUtils.integerRound( self.doubleValue() / other.doubleValue() ) );
+        return new DataDouble( NumberUtils.integerRound( self.doubleValue() / other.doubleValue() ) );
     }
 
     @Override
@@ -92,8 +92,33 @@ public class TypeDouble implements INumberType {
     }
 
     @Override
+    public INumberData leftRotate( INumberData self, int amount ) {
+        return new DataDouble( Long.rotateLeft( self.longValue(), amount ) );
+    }
+
+    @Override
+    public INumberData rightRotate( INumberData self, int amount ) {
+        return new DataDouble( Long.rotateRight( self.longValue(), amount ) );
+    }
+
+    @Override
     public INumberData bitNot( INumberData self ) {
         return new DataDouble( ~ self.longValue() );
+    }
+
+    @Override
+    public INumberData bitFlip( INumberData self ) {
+        return new DataDouble( Long.reverse( self.longValue() ) );
+    }
+
+    @Override
+    public INumberData bitCount( INumberData self ) {
+        return new DataDouble( Long.bitCount( self.longValue() ) );
+    }
+
+    @Override
+    public INumberData binarySwap( INumberData self ) {
+        return new DataDouble( Double.longBitsToDouble( self.longValue() ) );
     }
 
     @Override

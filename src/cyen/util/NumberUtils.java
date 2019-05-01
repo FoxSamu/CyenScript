@@ -1,6 +1,6 @@
 package cyen.util;
 
-public class ArithmeticUtils {
+public class NumberUtils {
     /**
      * Rounds the double as if it is converted to an integer. This rounds the number up ({@link Math#ceil}) when it is
      * negative, and down ({@link Math#floor}) when it is positive. This does not convert to an integer so that large
@@ -21,5 +21,29 @@ public class ArithmeticUtils {
      */
     public static float integerRound( float d ) {
         return d < 0 ? (float) Math.ceil( d ) : (float) Math.floor( d );
+    }
+
+    public static byte rotateRight( byte bits, int shift ) {
+        return (byte) ( ( bits & 0xff ) >>> shift | ( bits & 0xff ) << 8 - shift );
+    }
+
+    public static byte rotateLeft( byte bits, int shift ) {
+        return (byte) ( ( bits & 0xff ) << shift | ( bits & 0xff ) >>> 8 - shift );
+    }
+
+    public static short rotateRight( short bits, int shift ) {
+        return (short) ( ( bits & 0xffff ) >>> shift | ( bits & 0xffff ) << 16 - shift );
+    }
+
+    public static short rotateLeft( short bits, int shift ) {
+        return (short) ( ( bits & 0xffff ) << shift | ( bits & 0xffff ) >>> 16 - shift );
+    }
+
+    public static byte reverseBits( byte bits ) {
+        return (byte) ( Integer.reverse( bits & 0xff ) >>> 24 );
+    }
+
+    public static short reverseBits( short bits ) {
+        return (short) ( Integer.reverse( bits & 0xffff ) >>> 16 );
     }
 }

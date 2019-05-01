@@ -8,7 +8,14 @@ public class CyenObject implements ICyenData {
 
     private final HashMap<String, ICyenData> members = new HashMap<>();
 
+    private final String constructorName;
+
     public CyenObject( ExecContext ctx ) {
+        constructorName = "Object";
+    }
+
+    public CyenObject( ExecContext ctx, String constructor ) {
+        constructorName = constructor;
     }
 
     @Override
@@ -27,7 +34,7 @@ public class CyenObject implements ICyenData {
     }
 
     @Override
-    public ICyenData instantiate( ExecContext ctx ) {
+    public ICyenData instantiate( ExecContext ctx, ICyenData... args ) {
         return null;
     }
 
@@ -68,11 +75,16 @@ public class CyenObject implements ICyenData {
 
     @Override
     public String constructor() {
-        return "Object";
+        return constructorName;
     }
 
     @Override
     public String type() {
         return "object";
+    }
+
+    @Override
+    public boolean booleanize( ExecContext ctx ) {
+        return true;
     }
 }
